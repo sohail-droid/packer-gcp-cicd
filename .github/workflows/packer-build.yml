@@ -24,8 +24,9 @@ jobs:
     - name: Authenticate to GCP
       uses: google-github-actions/auth@v1
       with:
-        workload_identity_provider: "projects/832520843662/locations/global/workloadIdentityPools/my-github-pool/providers/<provider-id>"
+        workload_identity_provider: "projects/832520843662/locations/global/workloadIdentityPools/smd-identity-pool-id-01/providers/smd-provider-name-id"
         service_account: "packer-builder@training-2024-batch.iam.gserviceaccount.com"
+
 
 
 
