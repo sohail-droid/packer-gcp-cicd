@@ -44,6 +44,7 @@ jobs:
     # Step 5: Build the Packer image
     - name: Packer Build
       run: |
-        packer init gcp-packer.pkr.hcl
-        packer validate gcp-packer.pkr.hcl
-        packer build gcp-packer.pkr.hcl
+        packer init packer/gcp-packer.pkr.hcl
+        packer validate packer/gcp-packer.pkr.hcl
+        packer build packer/gcp-packer.pkr.hcl
+
