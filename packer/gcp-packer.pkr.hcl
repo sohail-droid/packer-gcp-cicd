@@ -1,3 +1,5 @@
+
+sohail@cloudshell:~/packer (training-2024-batch)$ cat gcp-packer.pkr.hcl 
 packer {
   required_plugins {
     googlecompute = {
@@ -18,7 +20,7 @@ source "googlecompute" "ubuntu" {
   machine_type            = "e2-medium"
 
   source_image_family     = "ubuntu-2204-lts"
-  # source_image_project_id = ["ubuntu-os-cloud"]   # list of string
+  source_image_project_id = ["ubuntu-os-cloud"]   # list of string
   ssh_username            = "ubuntu"
 
   disk_name               = "packer-vm-disk-custom"
@@ -41,4 +43,3 @@ build {
 "sudo systemctl enable nginx"
     ]
   }
-}
