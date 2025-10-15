@@ -24,9 +24,9 @@ jobs:
     - name: Authenticate to GCP
       uses: google-github-actions/auth@v1
       with:
-        # <-- Correct provider from your pool
         workload_identity_provider: "projects/832520843662/locations/global/workloadIdentityPools/smd-identity-pool-id-01/providers/smd-provider-name-id"
         service_account: "packer-builder@training-2024-batch.iam.gserviceaccount.com"
+
 
     # Step 3: Install dependencies required by Packer
     - name: Install dependencies
