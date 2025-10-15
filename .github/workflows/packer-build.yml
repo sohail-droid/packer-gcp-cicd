@@ -1,5 +1,6 @@
 name: Build GCP Image with Packer
 
+# Trigger workflow when pushing to main branch
 on:
   push:
     branches:
@@ -8,35 +9,43 @@ on:
 jobs:
   packer-build:
     runs-on: ubuntu-latest
+
     permissions:
+      # Required for OIDC token to authenticate to GCP
       id-token: write
       contents: read
 
     steps:
+    # Step 1: Checkout your repo code
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
+    # Step 2: Authenticate to GCP using Workload Identity
+    - name: Authenticate to GCP
+      uses: google-github-actions/auth@v1
+      with:
+        # <-- Correct provider from your pool
+        workload_identity_provider: "projects/832520843662/locations/global/workloadIdentityPools/smd-identity-pool-id-01/providers/smd-provider-name-id"
+        service_account: "packer-builder@training-2024-batch.iam.gserviceaccount.com"
+
+    # Step 3: Install dependencies required by Packer
     - name: Install dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y curl unzip gnupg software-properties-common lsb-release
+        sudo apt-get install -y curl unzip gnupg software-properties-common
 
-    - name: Authenticate to GCP
-      uses: google-github-actions/auth@v2
-      with:
-        workload_identity_provider: "projects/832520843662/locations/global/workloadIdentityPools/smd-identity-pool-id-01/providers/github-actions-provider"
-        service_account: "packer-builder@training-2024-batch.iam.gserviceaccount.com"
-
+    # Step 4: Install HashiCorp Packer
     - name: Install Packer
       run: |
         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
         echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
         sudo apt-get update
         sudo apt-get install -y packer
-        packer version
+        packer version   # Confirm Packer installed
 
+    # Step 5: Build your GCP image using Packer
     - name: Packer Build
       run: |
-        packer init packer/gcp-packer.pkr.hcl
-        packer validate packer/gcp-packer.pkr.hcl
-        packer build packer/gcp-packer.pkr.hcl
+        packer init packer/gcp-packer.pkr.hcl       # Initialize Packer template
+        packer validate packer/gcp-packer.pkr.hcl   # Validate template for errors
+        packer build packer/gcp-packer.pkr.hcl      # Build the image
