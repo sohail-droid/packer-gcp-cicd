@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  id-token: write
+
+  
 jobs:
   packer-build:
     runs-on: ubuntu-latest
