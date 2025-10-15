@@ -1,5 +1,3 @@
-
-sohail@cloudshell:~/packer (training-2024-batch)$ cat gcp-packer.pkr.hcl 
 packer {
   required_plugins {
     googlecompute = {
