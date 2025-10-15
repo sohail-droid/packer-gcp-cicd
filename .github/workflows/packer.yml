@@ -1,29 +1,27 @@
-name: Building GCP Image using Packer
+name: Build Packer Image
 
 on:
   push:
-    branches: [ main ]   # when code changes on main branch
+    branches:
+      - main
 
 jobs:
-  build-image:
+  packer-build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Packer
-        uses: hashicorp/setup-packer@v2
+      # Authenticate to GCP using Workload Identity Federation
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v1
         with:
-          version: "latest"
+          workload_identity_provider: projects/832520843662/locations/global/workloadIdentityPools/smd-identity-pool-id-01/providers/github-actions
+          service_account: packer-builder@training-2024-batch.iam.gserviceaccount.com
 
-      - name: Authenticate with GCP
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+      # Install Packer
+      - name: Install Packer
+        run: sudo apt-get update && sudo apt-get install -y packer
 
-      - name: Validate Packer template
-        run: packer validate gcp-packer.pkr.hcl
-
-      - name: Build Image
+      # Run Packer build
+      - name: Build GCP Image
         run: packer build gcp-packer.pkr.hcl
