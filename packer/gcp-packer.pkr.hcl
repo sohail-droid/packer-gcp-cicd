@@ -13,7 +13,7 @@ variable "project_id" {
 
 source "googlecompute" "ubuntu" {
   project_id              = var.project_id
-  instance_name           = "packer-test-vm"
+  instance_name           = "gcp-packer-test-vm"
   zone                    = "us-central1-a"
   machine_type            = "e2-medium"
   source_image_family     = "ubuntu-2204-lts"
