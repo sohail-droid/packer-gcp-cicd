@@ -7,6 +7,9 @@ packer {
   }
 }
 
+variable "project_id" {
+  default = "training-2024-batch"
+}
 
 source "googlecompute" "ubuntu" {
   project_id              = var.project_id
