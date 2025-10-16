@@ -16,7 +16,7 @@ variable "source_image_family" {
 
 variable "source_image_project_id" {
   type    = list(string)
-  default = ["ubuntu-os-cloud"]  # Now it's a list
+  default = ["ubuntu-os-cloud"]
 }
 
 variable "ssh_username" {
@@ -25,4 +25,12 @@ variable "ssh_username" {
 
 variable "image_name" {
   default = "packer-nginx-{{timestamp}}"
+}
+
+variable "network" {
+  default = "default"
+}
+
+variable "subnetwork" {
+  default = "default"
 }
