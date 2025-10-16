@@ -9,18 +9,17 @@ packer {
 
 source "googlecompute" "ubuntu" {
   project_id              = var.project_id
-  instance_name           = "gcp-packer-test-vm"
-  zone                    = "us-central1-a"
-  machine_type            = "e2-medium"
-  source_image_family     = "ubuntu-2204-lts"
-  source_image_project_id = ["ubuntu-os-cloud"]
-  ssh_username            = "ubuntu"
-  disk_name               = "packer-vm-disk-custom"
-  network                 = "default"
-  subnetwork              = "default"
-  tags                    = ["packer"]
-  
-  image_name              = "my-packer-image-{{timestamp}}"
+  instance_name           = var.instance_name
+  zone                    = var.zone
+  machine_type            = var.machine_type
+  source_image_family     = var.source_image_family
+  source_image_project_id = var.source_image_project_id
+  ssh_username            = var.ssh_username
+  disk_name               = var.disk_name
+  network                 = var.network
+  subnetwork              = var.subnetwork
+  tags                    = var.tags
+  image_name              = var.image_name
 }
 
 build {
